@@ -32,7 +32,7 @@ function App() {
             });
             setResult(response.data);
         } catch (error) {
-            const errorMessage = error?.response?.message || "An error occurred";
+            const errorMessage = "An error occurred";
             alert(errorMessage);
         }
     };
