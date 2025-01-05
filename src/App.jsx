@@ -6,12 +6,13 @@ function App() {
     const [targetAmount, setTargetAmount] = useState("");
     const [coinDenominations, setCoinDenominations] = useState("");
     const [result, setResult] = useState([]);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
     
         if (isNaN(targetAmount) || targetAmount <= 0) {
-            alert("Please enter a valid target amount.");
+            setErrorMessage("Please enter a valid target amount.");
             return;
         }
     
@@ -21,7 +22,7 @@ function App() {
             .filter((d) => !isNaN(d) && d > 0);
     
         if (denominations.length === 0) {
-            alert("Please enter at least one valid coin denomination.");
+            setErrorMessage("Please enter at least one valid coin denomination.");
             return;
         }
     
@@ -31,9 +32,9 @@ function App() {
                 denominations: denominations,
             });
             setResult(response.data);
+            setErrorMessage(""); // Clear any previous error messages
         } catch (error) {
-            const errorMessage = "An error occurred";
-            alert(errorMessage);
+            setErrorMessage(error?.response?.data?.message || "An error occurred. Please try again later.");
         }
     };
 
@@ -61,6 +62,8 @@ function App() {
                 </div>
                 <button type="submit">Calculate</button>
             </form>
+
+            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
             {result.length > 0 && (
                 <div>
