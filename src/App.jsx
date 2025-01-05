@@ -32,7 +32,8 @@ function App() {
             });
             setResult(response.data);
         } catch (error) {
-            alert(error.response?.data || "An error occurred");
+            const errorMessage = error.response?.data || error.message || "An error occurred";
+            alert(errorMessage);
         }
     };
 
