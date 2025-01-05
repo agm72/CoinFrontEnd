@@ -15,7 +15,7 @@ function App() {
           .map((d) => parseFloat(d.trim()));
   
       try {
-          const response = await axios.post("http://localhost:8080/api/v1/coins", {
+          const response = await axios.post("http://54.255.195.248:8080/api/v1/coins", {
               targetAmount: parseFloat(targetAmount),
               denominations: denominations,
           });
