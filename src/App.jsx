@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from "axios";
 import './App.css';
 
@@ -8,22 +8,33 @@ function App() {
     const [result, setResult] = useState([]);
 
     const handleSubmit = async (e) => {
-      e.preventDefault();
-  
-      const denominations = coinDenominations
-          .split(",")
-          .map((d) => parseFloat(d.trim()));
-  
-      try {
-          const response = await axios.post("http://54.255.195.248:8080/api/v1/coins", {
-              targetAmount: parseFloat(targetAmount),
-              denominations: denominations,
-          });
-          setResult(response.data);
-      } catch (error) {
-          alert(error.response?.data || "An error occurred");
-      }
-  };
+        e.preventDefault();
+
+        if (isNaN(targetAmount) || targetAmount <= 0) {
+            alert("Please enter a valid target amount.");
+            return;
+        }
+
+        const denominations = coinDenominations
+            .split(",")
+            .map((d) => parseFloat(d.trim()))
+            .filter((d) => !isNaN(d) && d > 0);
+
+        if (denominations.length === 0) {
+            alert("Please enter at least one valid coin denomination.");
+            return;
+        }
+
+        try {
+            const response = await axios.post("http://54.255.195.248:8080/api/v1/coins", {
+                targetAmount: parseFloat(targetAmount),
+                denominations: denominations,
+            });
+            setResult(response.data);
+        } catch (error) {
+            alert(error.response?.data || "An error occurred");
+        }
+    };
 
     return (
         <div style={{ padding: "20px" }}>
