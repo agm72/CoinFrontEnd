@@ -32,10 +32,19 @@ function App() {
             });
             setResult(response.data);
         } catch (error) {
-            const errorMessage = error?.response?.data?.message || "An error occurred";
+            // Log the error to the console to inspect the structure
+            console.error("Error response:", error.response);
+    
+            // Extract the error message correctly based on the response structure
+            const errorMessage = error.response && error.response.data && error.response.data.message
+                ? error.response.data.message
+                : "An error occurred";
+    
+            // Show the correct error message
             alert(errorMessage);
         }
     };
+    
 
     return (
         <div style={{ padding: "20px" }}>
